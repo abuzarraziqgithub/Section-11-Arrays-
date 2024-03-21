@@ -27,7 +27,7 @@ const arr2 = ['j', 'i', 'h', 'g', 'f'];
 console.log(arr2.reverse());
 
 // CONCAT
-// It concat array with another
+// It concatinate array with another
 // It doesn't mutate the original array.
 const letters = arr.concat(arr2);
 console.log(letters);
@@ -35,6 +35,7 @@ console.log(letters);
 console.log([...arr, ...arr2]);
 
 // JOIN
+// It also doesn't change the original array.
 console.log(letters.join(' - '));
 
 // The new at method:
