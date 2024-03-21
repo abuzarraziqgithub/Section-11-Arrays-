@@ -36,3 +36,23 @@ console.log([...arr, ...arr2]);
 
 // JOIN
 console.log(letters.join(' - '));
+
+// The new at method:
+// It is used in ES2022.
+// It is same as we use the bracket notation.
+// by using at method , we can easily find the last element of an array.
+
+const arr3 = [12, 23, 44];
+console.log(arr3[0]); // 12
+console.log(arr3.at(0)); // 12
+
+// getting last array element in old way:
+console.log(arr3[arr3.length - 1]); //44
+console.log(arr3.slice(-1)[0]); // 44
+
+// By using at method:
+console.log(arr3.at(-1)); // 44
+
+// Also used for strings:
+console.log('Abuzar'.at(2)); // u
+console.log('Abuzar'.at(-1)); // r
