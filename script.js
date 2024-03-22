@@ -61,6 +61,7 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+// Lecture 5 :
 const displayMovements = function (movements) {
   containerMovements.innerHTML = '';
   movements.forEach(function (mov, i) {
@@ -79,6 +80,30 @@ const displayMovements = function (movements) {
   });
 };
 displayMovements(account1.movements);
+
+// Lecture 10 : Reduce Method (Manipulating current balance)
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance} PKR`;
+};
+calcDisplayBalance(account1.movements);
+
+// Lecture 8 : Computing usernames for each account owner by using map and forEach method:
+const createUserNames = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+createUserNames(accounts);
+console.log(accounts);
+//  In this lecture , it is very important to understand the usecase for the map method and the forEach method:
+//The  map() method allows us to create new simple array which only contains the initials of whatever name it is used on.
+// The forEach() method was a great usecase to produce some so called side effects ,in other words , to do some work without returning anything.
+//  we simply looped over the accounts array , and in each iteration we manipulated the current account object and added a username to it based on the account owner plus all the transformations
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
