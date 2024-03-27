@@ -88,6 +88,39 @@ const calcDisplayBalance = function (movements) {
 };
 calcDisplayBalance(account1.movements);
 
+// Lecture 11 : Manipulating the summary by using filter and reduce method, as we did practice in lecture 11 file:
+
+// create a function
+const calcDisplaySummary = function (
+  movements // we will pass the actual account movements here :
+) {
+  // we filter the array to deposites and then that deposites are sum up to create sum of all array elements
+  // For Income:
+  const income = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+
+  labelSumIn.textContent = `${income} PKR `;
+
+  // For Withdrawal (out)
+  const withdrawal = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov);
+
+  labelSumOut.textContent = `${Math.abs(withdrawal)} PKR`;
+
+  // Interest
+  const interestRate = 0.0;
+  // we used map method , to do some operation.
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposite => deposite * interestRate)
+    .reduce((acc, map) => acc + map, 0);
+  labelSumInterest.textContent = `${interest} PKR`;
+};
+calcDisplaySummary(account1.movements);
+// calcDisplaySummary(account2.mosvements);
+
 // Lecture 8 : Computing usernames for each account owner by using map and forEach method:
 const createUserNames = function (accs) {
   accs.forEach(function (acc) {
