@@ -18,5 +18,4 @@ console.log(totalDepositsUSD);
 -> It can cause real performance issues for very huge array chaining.
 -> It is a bad method in javascript to chain methods that mutate the underlying original array and example of that is splice method.
 -> You should not chain like the splice or reverse method.
-
 */
