@@ -28,14 +28,14 @@ const account3 = {
 
 const account4 = {
   owner: 'Sarah Smith',
-  movements: [430, 1000, 700, 50, 90],
+  movements: [430, 1000, 700, 50, 90, 211, 2, 12],
   interestRate: 1,
   pin: 4444,
 };
 
 const account5 = {
   owner: 'Abuzar RaziQ',
-  movements: [44322, 5000, 7020, 5000, 9000000],
+  movements: [44322, 5000, 7020, 5000, 9000000, 3444, 3222, 422],
   interestRate: 2,
   pin: 5555,
 };
@@ -89,9 +89,9 @@ const displayMovements = function (movements) {
 // displayMovements(account1.movements);
 
 // Lecture 10 : Reduce Method (Manipulating current balance)
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance} PKR`;
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${acc.balance} PKR`;
 };
 // calcDisplayBalance(account1.movements);
 
@@ -142,6 +142,17 @@ createUserNames(accounts);
 
 let currentAccount;
 
+const updateUi = function (acc) {
+  // Display movements
+  displayMovements(acc.movements);
+
+  // Display balance
+  calcDisplayBalance(acc);
+
+  // Display summary
+  calcDisplaySummary(acc);
+};
+
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault(); // It will prevent the default refresh of the form.
 
@@ -168,14 +179,81 @@ btnLogin.addEventListener('click', function (e) {
     // Remove focus from pin input field using blur method:
     inputLoginPin.blur();
 
-    // Display movements
-    displayMovements(currentAccount.movements);
+    // Update UI:
+    updateUi(currentAccount);
+  }
+});
 
-    // Display balance
-    calcDisplayBalance(currentAccount.movements);
+// Lecture - 14 : Implementing Transfers:
+// Click on transfer button.
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
 
-    // Display summary
-    calcDisplaySummary(currentAccount);
+  const amount = Number(inputTransferAmount.value);
+
+  // Find the username of the given account , where the username is equal to the tranfer input username.
+  const receiveAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+
+  inputTransferAmount.value = inputTransferTo.value = '';
+  inputTransferTo.blur();
+
+  if (
+    amount > 0 &&
+    receiveAcc &&
+    currentAccount.balance >= amount &&
+    receiveAcc?.username !== currentAccount.username
+  ) {
+    // Doing  the Transfer:
+    currentAccount.movements.push(-amount);
+    receiveAcc.movements.push(amount);
+
+    // Update UI:
+    updateUi(currentAccount);
+  }
+});
+
+// Lecture -16 : Request a Loan.
+
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+
+  // Any deposite should be greater than 10% of their request.
+  // If at least one element in the movement array has the condition applied , than it will be true.
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    // If it's true:
+    currentAccount.movements.push(amount);
+
+    // Update UI
+    updateUi(currentAccount);
+  }
+
+  // Clear the input:
+  inputLoanAmount.value = '';
+});
+
+// Lecture - 15:
+// Closing Account:
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+    console.log(index);
+
+    // Delete Account:
+    accounts.splice(index, 1);
+
+    // Hide UI:
+    containerApp.style.opacity = 0;
   }
 });
 
@@ -192,3 +270,31 @@ const currencies = new Map([
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+
+// LECTURE - 17 FLAT FLATMAP METHODS:
+
+// LET'S GET ARRAYS OF ALL THE ACCOUNT MOVEMENTS USING MAP METHOD:
+const accountMovements = accounts.map(acc => acc.movements);
+console.log(accountMovements);
+
+// NOW LET'S MAKE ONE ARRAY OF ALL THE MOVEMENTS ELEMENTS
+const movementsArray = accountMovements.flat();
+console.log(movementsArray);
+
+// LET'S ADD IT TOGETHER:
+const overalBalance = movementsArray.reduce((acc, mov) => acc + mov, 0);
+console.log(overalBalance);
+
+// WE CAN CHAIN IT AS WELL:
+const chainAllMovs = accounts
+  .map(acc => acc.movements)
+  .flat()
+  .reduce((acc, mov) => acc + mov);
+console.log(chainAllMovs);
+
+// WE CAN USE FLATMAP , IT WORKS THE SAME AS WE CHAIN THE FLAT WITH MAP:
+// WE USE IT FOR BETTER PERFORMANCE AND ONLY IF THERE IS 1 DEPTH OF ARRAY.
+const flatMapMethod = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, mov) => acc + mov);
+console.log(flatMapMethod);
