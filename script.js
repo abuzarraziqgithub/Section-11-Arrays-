@@ -69,9 +69,15 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 // Lecture 5 :
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
-  movements.forEach(function (mov, i) {
+
+  // CREATE A VARIABLE FOR SORTING THE MOVEMENTS:
+  //  WE TAKE THE SLICE METHOD HERE BEACUSE WE DON'T WANT TO MUTATE THE ORIGINAL ARRAY.WE WANT TO MAKE A COPY OF IT.
+  const movs = movements.slice().sort((a, b) => (sort ? a - b : movements)); // SORTING FROM ASCENDING , BUT WE STARTED FROM THE BOTTOM , FOR US IT WILL BE DESCENDING.
+  // LET'S CREATE AN EVENT LISTENER FOR OUR SORT BUTTON.
+
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     const html = `
@@ -86,6 +92,15 @@ const displayMovements = function (movements) {
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
+// BUTTON SORT:
+// LET'S CREATE A SORTED VARIABLE OUTSIDE THIS FUNCTION , FOR FLIPPING THE TRUE OR FALSE FOR EVERY CLICK, OTHERWISE WE WILL NOT ABLE TO SWITCH AFTER ANOTHER CLICK.
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+});
 // displayMovements(account1.movements);
 
 // Lecture 10 : Reduce Method (Manipulating current balance)
