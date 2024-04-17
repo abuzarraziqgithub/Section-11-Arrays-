@@ -128,3 +128,5 @@ convertTitleCase(
 convertTitleCase(
   'and name is abuzar raziq and i am currently learning web development'
 );
+
+// THIS WAS ALL ABOUT ARRAY METHODS , WE ARE MOVING TOWARDS THE NEW SECTION .
