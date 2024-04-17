@@ -93,3 +93,38 @@ const sums2Bracket = accounts
     { deposites: 0, withdrawals: 0 }
   );
 console.log(sums2Bracket);
+
+// EXERCISE 4:
+// MAKING A FUNCTION THAT CONVERTS TEXT TO TITLECASE.
+
+const convertTitleCase = function (title) {
+  const exceptions = [
+    'a',
+    'is',
+    'an',
+    'and',
+    'the',
+    'but',
+    'or',
+    'on',
+    'in',
+    'with',
+    'too',
+  ];
+  const capitalize = str => str[0].toUpperCase() + str.slice(1);
+  const titleCase = title
+    .toLowerCase()
+    .split(' ')
+    .map(word => (exceptions.includes(word) ? word : capitalize(word)))
+    .join(' ');
+  console.log(capitalize(titleCase));
+};
+
+convertTitleCase('this is a title');
+convertTitleCase('this is a title and too long title');
+convertTitleCase(
+  'my name is abuzar raziq and i am currently learning web development'
+);
+convertTitleCase(
+  'and name is abuzar raziq and i am currently learning web development'
+);
